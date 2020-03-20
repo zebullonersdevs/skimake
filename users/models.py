@@ -16,7 +16,6 @@ class CustomUserProfile(models.Model):
     about                   = models.TextField(blank=True, null=True)
     phone_number            = models.CharField( max_length=50, blank=False, null=True, unique=True)
     Ref_phone_number        = models.CharField( max_length=50, blank=True, null=False, unique=True, default='123456')
-    balance                 = models.IntegerField(default=0)
     date_of_birth           = models.DateField(auto_now=False, auto_now_add=False)
     nationality             = models.CharField( max_length=50, null=True, blank=True)
     profile_pic             = models.ImageField(upload_to="profile_pic", null=True, blank=True)
@@ -35,3 +34,16 @@ class CustomUserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} Profile'
+
+
+class CustomUserWallet(models.Model):
+    '''
+    model representing custom user's wallet
+    '''
+    user                    = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    balance                 = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username}'s balance: {self.balance}"
+
+
