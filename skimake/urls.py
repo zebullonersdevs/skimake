@@ -11,7 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-
+from users.api.views import home
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -29,6 +29,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+   path('', home),
    path('admin/', admin.site.urls),
    path('api/v1/', include('users.api.urls')),  #api endpoint
    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
