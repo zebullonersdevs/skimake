@@ -1,3 +1,3 @@
 # skimake
 
-## a platform that connects customers to printers
+a platform that connects customers to printers
