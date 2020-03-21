@@ -168,15 +168,12 @@ class SocialConnectSerializer(SocialConnectMixin, SocialLoginSerializer):
 
 
 class RegisterSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=allauth_settings.EMAIL_REQUIRED)
+    name = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
     phone_number = serializers.CharField(required=True)
     referrer_number = serializers.CharField(required=True)
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-
-    def validate_username(self, username):
-        username = get_adapter().clean_username(username)
-        return username
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
@@ -213,7 +210,7 @@ class RegisterSerializer(serializers.Serializer):
 
     def get_cleaned_data(self):
         return {
-            'username': self.validated_data.get('username', ''),
+            'name': self.validated_data.get('name', ''),
             'password1': self.validated_data.get('password1', ''),
             'email': self.validated_data.get('email', ''),
             'phone_number': self.validated_data.get('phone_number', ''),
@@ -228,7 +225,7 @@ class RegisterSerializer(serializers.Serializer):
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
         CustomUserWallet.objects.create(user=user, balance=2000)
-        CustomUserProfile.objects.create(user=user, phone_number=self.cleaned_data.get("phone_number"), 
+        CustomUserProfile.objects.create(user=user, full_name=self.cleaned_data.get("name"), phone_number=self.cleaned_data.get("phone_number"), 
                                             ref_phone_number=self.cleaned_data.get("referrer_number")
                                         )
         return user
