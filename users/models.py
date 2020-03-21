@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 
 class CustomUser(AbstractUser):
-    email                  = models.EmailField(max_length=254, unique=True)
+    username                = models.CharField(unique=True, blank=True, null=True, max_length=50)
+    email                   = models.EmailField(max_length=254, unique=True, null=False)
 
     def __str__(self):
         return self.username
@@ -13,10 +14,10 @@ class CustomUserProfile(models.Model):
     an extension of the CustomUser model
     '''
     user                    = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
-    about                   = models.TextField(blank=True, null=True)
+    about                   = models.TextField(null=True, blank=True)
     phone_number            = models.CharField( max_length=50, blank=False, null=True, unique=True)
     ref_phone_number        = models.CharField( max_length=50, blank=True, null=False, default='123456')
-    date_of_birth           = models.DateField(auto_now=False, auto_now_add=False)
+    date_of_birth           = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     nationality             = models.CharField( max_length=50, null=True, blank=True)
     profile_pic             = models.ImageField(upload_to="profile_pic", null=True, blank=True)
     b_name                  = models.CharField( max_length=100, null=True, blank=True)
@@ -25,11 +26,11 @@ class CustomUserProfile(models.Model):
     b_employe_number        = models.IntegerField( null=True, blank=True )
     b_contact_person        = models.CharField( max_length=200, null=True, blank=True)
     b_phone_number          = models.IntegerField( null=True, blank=True )
-    b_email                 = models.EmailField(max_length=254, blank=True, null=True)
+    b_email                 = models.EmailField(max_length=254, null=True, blank=True)
     b_website               = models.CharField( max_length=200, null=True, blank=True)
     b_twitter_profile       = models.CharField( max_length=200, null=True, blank=True)
     b_facebook_profile      = models.CharField( max_length=200, null=True, blank=True)
-    b_annual_print_budget   = models.IntegerField()
+    b_annual_print_budget   = models.IntegerField(null=True, blank=True)
     b_logo                  = models.ImageField(upload_to="b_logo", null=True, blank=True)
 
     def __str__(self):
